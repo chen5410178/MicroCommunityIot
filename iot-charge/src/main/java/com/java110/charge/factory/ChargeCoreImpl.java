@@ -11,17 +11,14 @@ import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.account.AccountDto;
+import com.java110.dto.account.AccountRefundDto;
 import com.java110.dto.chargeMachine.*;
 import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
 import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
-import com.java110.dto.onlinePay.OnlinePayDto;
-import com.java110.dto.onlinePay.OnlinePayRefundDto;
 import com.java110.dto.parkingCouponCharge.ParkingCouponChargeDto;
 import com.java110.dto.userAttr.UserAttrDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
-import com.java110.intf.acct.IOnlinePayRefundV1InnerServiceSMO;
-import com.java110.intf.acct.IOnlinePayV1InnerServiceSMO;
-import com.java110.intf.acct.IReturnMoneyV1InnerServiceSMO;
+import com.java110.intf.acct.IAccountRefundV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponChargeV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponShopV1InnerServiceSMO;
@@ -34,8 +31,6 @@ import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import com.java110.po.chargeMachineOrderAcct.ChargeMachineOrderAcctPo;
 import com.java110.po.chargeMachineOrderCoupon.ChargeMachineOrderCouponPo;
 import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
-import com.java110.po.onlinePay.OnlinePayPo;
-import com.java110.po.onlinePay.OnlinePayRefundPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,13 +99,7 @@ public class ChargeCoreImpl implements IChargeCore {
     private IStoreShopV1InnerServiceSMO shopInnerServiceSMOImpl;
 
     @Autowired
-    private IOnlinePayV1InnerServiceSMO onlinePayV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IReturnMoneyV1InnerServiceSMO returnMoneyV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IOnlinePayRefundV1InnerServiceSMO onlinePayRefundV1InnerServiceSMOImpl;
+    private IAccountRefundV1InnerServiceSMO accountRefundV1InnerServiceSMOImpl;
 
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
@@ -214,14 +203,9 @@ public class ChargeCoreImpl implements IChargeCore {
             accountDetailPo.setRemark("充电扣款金额-" + chargeMachineOrderDtos.get(0).getOrderId());
             accountInnerServiceSMOImpl.withholdAccount(accountDetailPo);
         } else {
-            //直接微信退回即可
-            try {
-                refundAmount(accountDtos.get(0).getAcctId(), returnMoney, chargeRulePriceDtos.get(0).getCommunityId());
-            }catch (Exception e){
-                accountDetailPo.setAmount(returnMoney + "");
-                accountDetailPo.setRemark("充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
-                accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
-            }
+            //优先逐笔原路退回，未成功部分退回账户余额
+            refundReturnMoney(accountDtos.get(0), accountDetailPo, returnMoneyDec,
+                    chargeRulePriceDtos.get(0).getCommunityId(), chargeMachineOrderDtos.get(0).getOrderId());
         }
 
         //充电表中加入退款金额
@@ -246,86 +230,53 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
     }
 
-    private void refundAmount(String acctId, double returnMoney, String communityId) {
-        // 1. 根据acctId查询Online_pay表中的记录（busiId = acctId）
-        OnlinePayDto onlinePayDto = new OnlinePayDto();
-        onlinePayDto.setBusiId(acctId);
-        onlinePayDto.setPage(1);
-        onlinePayDto.setState(OnlinePayDto.STATE_C);
-        onlinePayDto.setRow(100); // 查询足够多的记录
-
-        List<OnlinePayDto> onlinePayDtos = onlinePayV1InnerServiceSMOImpl.queryOnlinePays(onlinePayDto);
-
-        if (onlinePayDtos == null || onlinePayDtos.isEmpty()) {
-            throw new CmdException("未找到对应的支付记录");
-        }
-        OnlinePayDto payDto = onlinePayDtos.get(0);
-        String refundId = GenerateCodeFactory.getGeneratorId("10");
-        OnlinePayRefundPo refundPo = new OnlinePayRefundPo();
-        refundPo.setRefundId(refundId);
-        refundPo.setPayId(payDto.getPayId());
-        refundPo.setRefundFee(new BigDecimal(returnMoney));
-        refundPo.setBusiId(acctId);
-        refundPo.setCommunityId(communityId);
-        refundPo.setState(OnlinePayDto.STATE_WT); // P-处理中
-        refundPo.setMessage("退款申请中");
-        refundPo.setRefundUserId("-1");
-
-        onlinePayRefundV1InnerServiceSMOImpl.saveOnlinePayRefund(refundPo);
-
-        // 退款单号与退款金额由本次请求显式传入，失败重试沿用同一单号与同一金额
-        OnlinePayRefundDto refundDto = new OnlinePayRefundDto();
-        refundDto.setRefundId(refundId);
-        refundDto.setPayId(payDto.getPayId());
-        refundDto.setRefundFee(new BigDecimal(returnMoney));
-        refundDto.setBusiId(acctId);
-        refundDto.setCommunityId(communityId);
-
-        //退款
-        ResultVo resultVo;
-        try {
-            resultVo = returnMoneyV1InnerServiceSMOImpl.returnMoney(refundDto);
-        } catch (Exception e) {
-           failRefund(refundId, communityId, e.getLocalizedMessage());
-           throw new CmdException(StringUtil.isEmpty(e.getLocalizedMessage()) ? "退款失败" : e.getLocalizedMessage());
-        }
-        if (resultVo == null || resultVo.getCode() != ResultVo.CODE_OK) {
-            failRefund(refundId, communityId, resultVo == null ? "退款失败" : resultVo.getMsg());
-            throw new CmdException(resultVo == null ? "退款失败" : resultVo.getMsg());
-        }
-        refundPo = new OnlinePayRefundPo();
-        refundPo.setRefundId(refundId);
-        refundPo.setCommunityId(communityId);
-        refundPo.setState(OnlinePayDto.STATE_C); // P-处理中
-        refundPo.setMessage(resultVo.getMsg());
-        onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(refundPo);
-
-        // 更新online_pay表中的剩余金额
-        BigDecimal remainingFee = payDto.getRemainingFee() == null ? BigDecimal.ZERO : payDto.getRemainingFee();
-        BigDecimal newRemainingFee = remainingFee.subtract(new BigDecimal(returnMoney));
-        if (newRemainingFee.compareTo(BigDecimal.ZERO) < 0) {
-            newRemainingFee = BigDecimal.ZERO;
-        }
-        OnlinePayPo onlinePayPo = new OnlinePayPo();
-        onlinePayPo.setPayId(payDto.getPayId());
-        onlinePayPo.setRemainingFee(newRemainingFee.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-        onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
+    /**
+     * 充电退款原路退回（逐笔分摊，不退减账户余额）
+     *
+     * @param acctId      账户ID
+     * @param returnMoney 应退金额
+     * @param communityId 小区ID
+     * @param remark      备注
+     * @return 实际原路退回金额（可能小于应退金额，或为 0）
+     */
+    private BigDecimal refundOnlineAmount(String acctId, BigDecimal returnMoney, String communityId, String remark) {
+        AccountRefundDto accountRefundDto = new AccountRefundDto();
+        accountRefundDto.setAcctId(acctId);
+        accountRefundDto.setCommunityId(communityId);
+        accountRefundDto.setAmount(returnMoney.setScale(2, BigDecimal.ROUND_HALF_UP));
+        accountRefundDto.setRefundUserId("-1");                 // 系统退款
+        accountRefundDto.setRemark(remark);
+        // 充电预扣款已从余额扣减，原路退回不再扣减余额
+        accountRefundDto.setDeductAccountAmount(AccountRefundDto.DEDUCT_ACCOUNT_AMOUNT_NO);
+        AccountRefundDto refundDto = accountRefundV1InnerServiceSMOImpl.refundAccountAmount(accountRefundDto);
+        return (refundDto == null || refundDto.getRefundFee() == null) ? BigDecimal.ZERO : refundDto.getRefundFee();
     }
 
     /**
-     * 标记退款单失败，避免异常时残留待退款（W）记录被后续退款复用退款单号
+     * 多退少补：优先逐笔原路退回，未成功部分退回账户余额
      *
-     * @param refundId    退款单号
-     * @param communityId 小区ID
-     * @param message     失败原因
+     * @param accountDto     账户信息
+     * @param accountDetailPo 账户明细（detailId 复用原明细）
+     * @param returnMoneyDec 应退金额
+     * @param communityId    小区ID
+     * @param orderId        充电订单号
      */
-    private void failRefund(String refundId, String communityId, String message) {
-        OnlinePayRefundPo failRefundPo = new OnlinePayRefundPo();
-        failRefundPo.setRefundId(refundId);
-        failRefundPo.setCommunityId(communityId);
-        failRefundPo.setState(OnlinePayDto.STATE_FT);
-        failRefundPo.setMessage(StringUtil.isEmpty(message) ? "退款失败" : message);
-        onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(failRefundPo);
+    private void refundReturnMoney(AccountDto accountDto, AccountDetailPo accountDetailPo,
+                                   BigDecimal returnMoneyDec, String communityId, String orderId) {
+        BigDecimal refundedFee = BigDecimal.ZERO;
+        try {
+            refundedFee = refundOnlineAmount(accountDto.getAcctId(), returnMoneyDec, communityId,
+                    "充电退回金额-" + orderId);
+        } catch (Exception e) {   // 一笔都没退成功 / 参数校验失败
+            logger.error("订单" + orderId + " 原路退回失败，未退回部分转入账户余额", e);
+        }
+        BigDecimal leftFee = returnMoneyDec.subtract(refundedFee).setScale(2, BigDecimal.ROUND_HALF_UP);
+        if (leftFee.compareTo(BigDecimal.ZERO) <= 0) {
+            return;
+        }
+        accountDetailPo.setAmount(leftFee.toPlainString());
+        accountDetailPo.setRemark("充电退回金额-" + orderId);
+        accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
     }
 
     /**
@@ -642,28 +593,19 @@ public class ChargeCoreImpl implements IChargeCore {
         }
 
         double returnMoney = Double.parseDouble(chargeMachineOrderAcctDtos.get(0).getAmount());
-        String detailId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId);
-        //直接微信退回即可
-        try {
-            refundAmount(accountDtos.get(0).getAcctId(), returnMoney, chargeMachineOrderDtos.get(0).getCommunityId());
-        }catch (Exception e){
-            AccountDetailPo accountDetailPo = new AccountDetailPo();
-            accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
-            accountDetailPo.setObjId(accountDtos.get(0).getObjId());
-            accountDetailPo.setObjType(accountDtos.get(0).getObjType());
-            accountDetailPo.setDetailId(detailId);
 
-            accountDetailPo.setAmount(returnMoney + "");
-            accountDetailPo.setRemark("由于" + notifyChargeOrderDto.getReason() + "，充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
-            accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
-        }
-
-
-
+        AccountDetailPo accountDetailPo = new AccountDetailPo();
+        accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
+        accountDetailPo.setObjId(accountDtos.get(0).getObjId());
+        accountDetailPo.setObjType(accountDtos.get(0).getObjType());
+        accountDetailPo.setDetailId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId));
+        //优先逐笔原路退回，未成功部分退回账户余额
+        refundReturnMoney(accountDtos.get(0), accountDetailPo, BigDecimal.valueOf(returnMoney),
+                chargeMachineOrderDtos.get(0).getCommunityId(), chargeMachineOrderDtos.get(0).getOrderId());
 
         //充电表中加入退款金额
         ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
-        chargeMachineOrderAcctPo.setAcctDetailId(detailId);
+        chargeMachineOrderAcctPo.setAcctDetailId(accountDetailPo.getDetailId());
         chargeMachineOrderAcctPo.setAmount((-1 * returnMoney) + "");
 
         chargeMachineOrderAcctPo.setCmoaId(GenerateCodeFactory.getGeneratorId("11"));

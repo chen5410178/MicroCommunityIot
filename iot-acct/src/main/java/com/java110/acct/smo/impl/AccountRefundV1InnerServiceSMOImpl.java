@@ -64,13 +64,16 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
         }
 
         AccountRefundDto resultDto = new AccountRefundDto();
+        // 是否扣减账户余额：未传按扣减处理，兼容业主余额退款旧调用
+        boolean deductAccountAmount =
+                !AccountRefundDto.DEDUCT_ACCOUNT_AMOUNT_NO.equals(accountRefundDto.getDeductAccountAmount());
         // 同一账户退款串行化，避免重复提交造成重复退款
         String requestId = DistributedLock.getLockUUID();
         String key = this.getClass().getSimpleName() + "RefundAmount" + acctId;
         String failMsg;
         try {
             DistributedLock.waitGetDistributedLock(key, requestId, REFUND_LOCK_EXPIRE_TIME);
-            failMsg = doRefundAccountAmount(accountRefundDto, resultDto);
+            failMsg = doRefundAccountAmount(accountRefundDto, resultDto, deductAccountAmount);
         } finally {
             DistributedLock.releaseDistributedLock(key, requestId);
         }
@@ -82,13 +85,15 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
     }
 
     /**
-     * 逐笔退款：每笔退款成功后立即扣减该笔剩余可退金额、扣减账户余额并写退款明细
+     * 逐笔退款：每笔退款成功后立即扣减该笔剩余可退金额，需要扣减账户余额时同时扣减余额并写退款明细
      *
-     * @param accountRefundDto 退款请求
-     * @param resultDto        退款结果
+     * @param accountRefundDto     退款请求
+     * @param resultDto            退款结果
+     * @param deductAccountAmount  是否扣减账户余额并写退款明细
      * @return 失败原因（全部退款成功时为空）
      */
-    private String doRefundAccountAmount(AccountRefundDto accountRefundDto, AccountRefundDto resultDto) {
+    private String doRefundAccountAmount(AccountRefundDto accountRefundDto, AccountRefundDto resultDto,
+                                         boolean deductAccountAmount) {
 
         String acctId = accountRefundDto.getAcctId();
         String communityId = accountRefundDto.getCommunityId();
@@ -108,7 +113,11 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
             throw new IllegalArgumentException("超出可退金额，最多可退" + refundableFee.setScale(2, BigDecimal.ROUND_HALF_UP) + "元");
         }
 
-        AccountDto accountDto = queryAccount(acctId, communityId);
+        // 不扣减余额时不校验账户，避免账户类型、小区口径不一致导致退款误失败
+        AccountDto accountDto = null;
+        if (deductAccountAmount) {
+            accountDto = queryAccount(acctId, communityId);
+        }
 
         // 2. 逐笔原路退回，处理完一笔再进入下一笔
         BigDecimal leftFee = refundAmount;
@@ -138,8 +147,8 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
                 break;
             }
 
-            // ④ 成功：扣减账户余额并写 3003 明细 → 扣减该笔剩余可退金额 → 回写退款单 C
-            commitRefundPay(onlinePayDto, accountDto, refundId, thisRefundFee, accountRefundDto.getRemark());
+            // ④ 成功：按开关扣减账户余额并写 3003 明细 → 扣减该笔剩余可退金额 → 回写退款单 C
+            commitRefundPay(onlinePayDto, accountDto, deductAccountAmount, refundId, thisRefundFee, accountRefundDto.getRemark());
             refundFee = refundFee.add(thisRefundFee);
             leftFee = leftFee.subtract(thisRefundFee);
             if (StringUtil.isEmpty(resultDto.getRefundId())) {
@@ -184,23 +193,26 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
     /**
      * 单笔退款成功后的账务处理（逐笔闭环）
      *
-     * @param onlinePayDto 支付记录
-     * @param accountDto   账户信息
-     * @param refundId     退款单号（同时作为账户明细的订单号）
-     * @param refundFee    本次退款金额
-     * @param remark       备注
+     * @param onlinePayDto        支付记录
+     * @param accountDto          账户信息（不扣减余额时为空）
+     * @param deductAccountAmount 是否扣减账户余额并写退款明细
+     * @param refundId            退款单号（同时作为账户明细的订单号）
+     * @param refundFee           本次退款金额
+     * @param remark              备注
      */
-    private void commitRefundPay(OnlinePayDto onlinePayDto, AccountDto accountDto, String refundId,
-                                 BigDecimal refundFee, String remark) {
-        // 1. 扣减账户余额并写 detail_type=3003 明细（同一次调用内同时生效）
-        AccountDetailPo accountDetailPo = new AccountDetailPo();
-        accountDetailPo.setAcctId(accountDto.getAcctId());
-        accountDetailPo.setObjId(accountDto.getObjId());
-        accountDetailPo.setObjType(accountDto.getObjType());
-        accountDetailPo.setAmount(refundFee.toString());
-        accountDetailPo.setOrderId(refundId);
-        accountDetailPo.setRemark(StringUtil.isEmpty(remark) ? AccountRefundDto.REFUND_REMARK : remark);
-        accountInnerServiceSMOImpl.refundAccount(accountDetailPo);
+    private void commitRefundPay(OnlinePayDto onlinePayDto, AccountDto accountDto, boolean deductAccountAmount,
+                                 String refundId, BigDecimal refundFee, String remark) {
+        // 1. 需要扣减余额时，扣减账户余额并写 detail_type=3003 明细（同一次调用内同时生效）
+        if (deductAccountAmount) {
+            AccountDetailPo accountDetailPo = new AccountDetailPo();
+            accountDetailPo.setAcctId(accountDto.getAcctId());
+            accountDetailPo.setObjId(accountDto.getObjId());
+            accountDetailPo.setObjType(accountDto.getObjType());
+            accountDetailPo.setAmount(refundFee.toString());
+            accountDetailPo.setOrderId(refundId);
+            accountDetailPo.setRemark(StringUtil.isEmpty(remark) ? AccountRefundDto.REFUND_REMARK : remark);
+            accountInnerServiceSMOImpl.refundAccount(accountDetailPo);
+        }
 
         // 2. 扣减该笔剩余可退金额，作为同一笔重复退款的资金闸门
         BigDecimal newRemainingFee = getRemainingFee(onlinePayDto).subtract(refundFee);
