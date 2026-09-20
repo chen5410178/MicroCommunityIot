@@ -251,6 +251,7 @@ public class ChargeCoreImpl implements IChargeCore {
         OnlinePayDto onlinePayDto = new OnlinePayDto();
         onlinePayDto.setBusiId(acctId);
         onlinePayDto.setPage(1);
+        onlinePayDto.setState(OnlinePayDto.STATE_C);
         onlinePayDto.setRow(100); // 查询足够多的记录
 
         List<OnlinePayDto> onlinePayDtos = onlinePayV1InnerServiceSMOImpl.queryOnlinePays(onlinePayDto);

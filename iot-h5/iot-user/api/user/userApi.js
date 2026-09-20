@@ -81,7 +81,7 @@ export function ownerLogin(_objData) {
 		requestNoAuth({
 			url: url.appUserLogin,
 			method: "POST",
-			data: _objData,
+			data: JSON.stringify(_objData),
 			success: function(res) {
 				//将业主信息和房屋信息一起返回
 				let _json = res.data;
@@ -99,6 +99,32 @@ export function ownerLogin(_objData) {
 
 	});
 
+}
+
+/**
+ * 手机号短信验证码登录（免登录）
+ * @param {Object} _objData { link 手机号, msgCode 短信验证码 }
+ */
+export function appUserSmsLogin(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.appUserSmsLogin,
+			method: "POST",
+			data: JSON.stringify(_objData),
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				uni.setStorageSync("userInfo",_json.data);
+				resolve(_json.data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	});
 }
 
 export function wechatLogin(_data) {

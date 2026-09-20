@@ -7,6 +7,7 @@ export default {
 	wechatRefrashToken: baseUrl + "iot/api/refreshToken", // 公众号刷新token
 	appUserRegister: baseUrl + "iot/api/login.appUserRegister", // 用户注册
 	appUserLogin: baseUrl + "iot/api/login.appUserLogin", // 用户注册
+	appUserSmsLogin: baseUrl + "iot/api/login.appUserSmsLogin", // 手机号短信验证码登录（免登录）
 	phoneWechatLogin: baseUrl + "iot/api/login.phoneWechatLogin",
 	listChargeMachine: baseUrl + "iot/api/chargeMachine.listChargeMachine", // 用户注册
 	listChargeMachinePort: baseUrl + "iot/api/chargeMachine.listChargeMachinePort", // 用户注册

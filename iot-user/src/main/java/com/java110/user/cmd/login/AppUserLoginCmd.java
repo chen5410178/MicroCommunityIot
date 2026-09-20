@@ -84,7 +84,7 @@ public class AppUserLoginCmd extends Cmd {
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
         if (ListUtil.isNull(userDtos)) {
-            throw new CmdException("用户名或密码错误");
+            throw new CmdException("手机号未注册或密码错误");
         }
 
         String communityId = "";

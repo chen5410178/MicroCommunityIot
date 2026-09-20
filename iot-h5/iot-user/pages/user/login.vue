@@ -95,11 +95,14 @@
 		getSystemPrivacy
 	} from '@/api/system/systemApi.js'
 	import {
-		getCommunityId
+		getCommunityId,
+		saveCurrentCommunity,
+		queryCommunitys
 	} from '@/api/community/communityApi.js'
 	import {
 		sendSmsCode,
-		ownerLogin
+		ownerLogin,
+		appUserSmsLogin
 	} from '@/api/user/userApi.js'
 	import {
 		saveUserLoginInfo,
@@ -212,13 +215,12 @@
 					this._toast('请先阅读并同意《用户服务协议》')
 					return
 				}
-				ownerLogin({
+				appUserSmsLogin({
 					link: this.phone,
-					passwd: this.code,
-					loginByPhone: true
+					msgCode: this.code
 				}).then(_user => {
 					saveUserLoginInfo(_user.userId, _user.token, _user.key)
-					this._loginSuccess()
+					this._loginSuccess(_user)
 				}).catch(err => {
 					this._toast(err || '登录失败')
 				})
@@ -243,16 +245,38 @@
 					loginByPhone: false
 				}).then(_user => {
 					saveUserLoginInfo(_user.userId, _user.token, _user.key)
-					this._loginSuccess()
+					this._loginSuccess(_user)
 				}).catch(err => {
 					this._toast(err || '登录失败')
 				})
 			},
-			_loginSuccess() {
+			_loginSuccess(_user) {
+				this._saveLoginCommunity(_user)
 				this._toast('登录成功 · 欢迎回来')
 				setTimeout(() => {
 					navigateToTargetUrl(takeTargetUrl(), '/pages/index/index')
 				}, 800)
+			},
+			// 登录成功后写入当前小区，避免首页/业务接口 communityId 缺失
+			_saveLoginCommunity(_user) {
+				const communityId = _user && _user.communityId
+				if (!communityId || communityId === '-1') {
+					return
+				}
+				queryCommunitys({
+					page: 1,
+					row: 50
+				}).then(res => {
+					const list = (res && res.code == 0 && res.data) || []
+					const hit = list.find(c => c.communityId === communityId)
+					saveCurrentCommunity(hit || {
+						communityId: communityId
+					})
+				}).catch(() => {
+					saveCurrentCommunity({
+						communityId: communityId
+					})
+				})
 			},
 			goRegister() {
 				uni.navigateTo({

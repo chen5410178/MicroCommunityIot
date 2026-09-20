@@ -20,6 +20,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/login.getSysInfo,");
         exclusions.append("/iot/api/login.appUserRegister,");
         exclusions.append("/iot/api/login.appUserLogin,");
+        exclusions.append("/iot/api/login.appUserSmsLogin,");// 手机号短信验证码登录
         exclusions.append("/iot/api/login.phoneWechatLogin,");
         exclusions.append("/iot/api/wechat.wechatRefreshOpenId,");
         exclusions.append("/iot/api/wechat.getWechatMiniOpenId,");
