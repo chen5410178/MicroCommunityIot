@@ -12,11 +12,10 @@ import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
-import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
-import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
@@ -30,7 +29,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service("applyYiteVisitorPassQrcodeBmoImpl")
 public class ApplyYiteVisitorPassQrcodeBmoImpl implements IIotCommonApiBmo {
@@ -46,9 +47,6 @@ public class ApplyYiteVisitorPassQrcodeBmoImpl implements IIotCommonApiBmo {
 
     @Autowired
     private IAccessControlLogV1InnerServiceSMO accessControlLogV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
     @Autowired
     private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
@@ -92,33 +90,37 @@ public class ApplyYiteVisitorPassQrcodeBmoImpl implements IIotCommonApiBmo {
 
         String roomName = roomDtos.get(0).getFloorNum() + "-" + roomDtos.get(0).getUnitNum() + "-" + roomDtos.get(0).getRoomNum();
 
-        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setPersonId(memberId);
-        accessControlFaceDto.setCommunityId(communityId);
-        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
-
-        List<AccessControlFaceDto> filteredFaces = new ArrayList<>();
-        for (AccessControlFaceDto face : accessControlFaceDtos) {
-            if (roomName.equals(face.getRoomName())) {
-                filteredFaces.add(face);
-            }
-        }
-        if (filteredFaces.isEmpty()) {
-            throw new IllegalArgumentException("未找到该人员在该房屋的门禁授权信息");
-        }
-
-        AccessControlFaceDto faceDto = filteredFaces.get(0);
-        String machineCode = faceDto.getMachineCode();
-
-        AccessControlDto accessControlDto = new AccessControlDto();
-        accessControlDto.setMachineCode(machineCode);
-        accessControlDto.setCommunityId(communityId);
-        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
-        Assert.listOnlyOne(accessControlDtos, "门禁设备不存在");
-
         AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
-        accessControlFloorDto.setMachineId(accessControlDtos.get(0).getMachineId());
+        accessControlFloorDto.setCommunityId(communityId);
+        accessControlFloorDto.setFloorId(roomDtos.get(0).getFloorId());
+        accessControlFloorDto.setUnitId(roomDtos.get(0).getUnitId());
         List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
+        if (ListUtil.isNull(accessControlFloorDtos)) {
+            throw new IllegalArgumentException("未找到该房屋所属楼栋/单元的门禁设备");
+        }
+
+        Set<String> machineIds = new LinkedHashSet<>();
+        for (AccessControlFloorDto floorDto : accessControlFloorDtos) {
+            if (StringUtil.isEmpty(floorDto.getMachineId())) {
+                continue;
+            }
+            machineIds.add(floorDto.getMachineId());
+        }
+
+        List<AccessControlDto> accessControlDtos = new ArrayList<>();
+        for (String machineId : machineIds) {
+            AccessControlDto accessControlDto = new AccessControlDto();
+            accessControlDto.setMachineId(machineId);
+            accessControlDto.setCommunityId(communityId);
+            List<AccessControlDto> tmpAccessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+            if (ListUtil.isNull(tmpAccessControlDtos)) {
+                continue;
+            }
+            accessControlDtos.add(tmpAccessControlDtos.get(0));
+        }
+        if (ListUtil.isNull(accessControlDtos)) {
+            throw new IllegalArgumentException("未找到该房屋所属楼栋/单元的门禁设备");
+        }
 
         int pwd = (int) (Math.random() * 900000) + 100000;
         String password = String.valueOf(pwd);
@@ -182,28 +184,32 @@ public class ApplyYiteVisitorPassQrcodeBmoImpl implements IIotCommonApiBmo {
         passwordData.put("data", data);
         passwordData.put("timestamp", System.currentTimeMillis() / 1000);
 
-        AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
-        accessControlLogPo.setLogId(GenerateCodeFactory.getGeneratorId("11"));
-        accessControlLogPo.setLogAction("/v3_1/sync/passwords/add/sync");
-        accessControlLogPo.setMachineId(accessControlDtos.get(0).getMachineId());
-        accessControlLogPo.setCommunityId(communityId);
-        accessControlLogPo.setState(AccessControlLogDto.STATE_REQ);
-        accessControlLogPo.setReqParam(passwordData.toJSONString());
-        accessControlLogPo.setLogCmd("VISITOR_PWD");
-        accessControlLogPo.setUserName(userName);
-        accessControlLogPo.setUserId(memberId);
-        accessControlLogV1InnerServiceSMOImpl.saveAccessControlLog(accessControlLogPo);
+        String passwordJson = passwordData.toJSONString();
 
-        JSONObject mqttMsg = new JSONObject();
-        mqttMsg.put("f", "server_php");
-        mqttMsg.put("t", machineCode);
-        mqttMsg.put("c", "syncPwd");
-        JSONObject m = new JSONObject();
-        m.put("p", password);
-        m.put("t", GenerateCodeFactory.getUUID());
-        mqttMsg.put("m", m);
+        for (AccessControlDto accessControl : accessControlDtos) {
+            AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
+            accessControlLogPo.setLogId(GenerateCodeFactory.getGeneratorId("11"));
+            accessControlLogPo.setLogAction("/v3_1/sync/passwords/add/sync");
+            accessControlLogPo.setMachineId(accessControl.getMachineId());
+            accessControlLogPo.setCommunityId(communityId);
+            accessControlLogPo.setState(AccessControlLogDto.STATE_REQ);
+            accessControlLogPo.setReqParam(passwordJson);
+            accessControlLogPo.setLogCmd("VISITOR_PWD");
+            accessControlLogPo.setUserName(userName);
+            accessControlLogPo.setUserId(memberId);
+            accessControlLogV1InnerServiceSMOImpl.saveAccessControlLog(accessControlLogPo);
 
-        MqttFactory.publish("zghl_door/" + machineCode, mqttMsg.toJSONString());
+            JSONObject mqttMsg = new JSONObject();
+            mqttMsg.put("f", "server_php");
+            mqttMsg.put("t", accessControl.getMachineCode());
+            mqttMsg.put("c", "syncPwd");
+            JSONObject m = new JSONObject();
+            m.put("p", password);
+            m.put("t", GenerateCodeFactory.getUUID());
+            mqttMsg.put("m", m);
+
+            MqttFactory.publish("zghl_door/" + accessControl.getMachineCode(), mqttMsg.toJSONString());
+        }
 
         JSONObject resultData = new JSONObject();
         resultData.put("visitorPassword", password);
