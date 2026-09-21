@@ -77,7 +77,7 @@ public class AppRefundOwnerAccountCmd extends Cmd {
 
         assertAccountOwner(userId, userDtos.get(0).getTel(), reqJson.getString("communityId"), accountDtos.get(0));
 
-        BigDecimal balance = new BigDecimal(StringUtil.isEmpty(accountDtos.get(0).getAmount()) ? "0" : accountDtos.get(0).getAmount());
+        BigDecimal refundAmount = new BigDecimal(StringUtil.isEmpty(accountDtos.get(0).getAmount()) ? "0" : accountDtos.get(0).getAmount());
 
         BigDecimal refundableFee = BigDecimal.ZERO;
         OnlinePayDto onlinePayDto = new OnlinePayDto();
@@ -93,18 +93,6 @@ public class AppRefundOwnerAccountCmd extends Cmd {
             }
         }
 
-        String amount = reqJson.getString("amount");
-        BigDecimal refundAmount;
-        if (StringUtil.isEmpty(amount)) {
-            // 不传金额时按可退金额（Σ该账户各笔剩余可退金额）口径全退
-            refundAmount = refundableFee;
-        } else {
-            try {
-                refundAmount = new BigDecimal(amount);
-            } catch (Exception e) {
-                throw new CmdException("退款金额格式错误");
-            }
-        }
         refundAmount = refundAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
 
         if (refundAmount.compareTo(BigDecimal.ZERO) <= 0) {
@@ -112,9 +100,6 @@ public class AppRefundOwnerAccountCmd extends Cmd {
         }
         if (refundAmount.compareTo(refundableFee.setScale(2, BigDecimal.ROUND_HALF_UP)) > 0) {
             throw new CmdException("部分金额非线上缴费，无法在线退费，请联系客服");
-        }
-        if (refundAmount.compareTo(balance.setScale(2, BigDecimal.ROUND_HALF_UP)) > 0) {
-            throw new CmdException("退款金额不能大于余额");
         }
 
         reqJson.put("amount", refundAmount.toPlainString());
