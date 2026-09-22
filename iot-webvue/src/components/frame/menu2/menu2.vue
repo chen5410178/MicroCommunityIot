@@ -22,6 +22,7 @@
           v-if="sub.isShow === 'Y'"
           :class="{ active: sub.active }"
           @click="gotoPage(sub.href, sub.name)"
+          @mouseenter="onMenuHover(sub)"
         >
           {{ sub.name }}
         </li>
@@ -36,6 +37,7 @@
 <script>
 import { listCatalogMenus } from '@/api/menu/menuApi'
 import { getCurrentCommunity, setMenus } from '@/utils/auth'
+import { prefetchOnIdle, prefetchRoutePath, collectMenuPaths, normalizeMenuPath } from '@/utils/routePrefetch'
 
 export default {
   name: 'Menu2',
@@ -67,7 +69,14 @@ export default {
         this.menus = this.refreshMenuActive(data, '')
         setMenus(this.menus)
         this.syncActiveByRoute()
+        this.prefetchMenus()
       }).catch(() => {})
+    },
+    prefetchMenus() {
+      prefetchOnIdle(this.$router, collectMenuPaths(this.menus), { budget: 6 })
+    },
+    onMenuHover(sub) {
+      prefetchRoutePath(this.$router, normalizeMenuPath(sub.href))
     },
     refreshMenuActive(menus, activeId) {
       menus.forEach(menu => {

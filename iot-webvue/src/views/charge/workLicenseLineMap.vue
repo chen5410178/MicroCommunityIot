@@ -30,6 +30,7 @@
 <script>
 import { listWorkLicenseMachine, listWorkLicensePos } from '@/api/charge/chargeApi'
 import { wgs84togcj02 } from '@/utils/mapUtil'
+import { loadScriptOnce, TENCENT_MAP_URL } from '@/utils/asyncScript'
 
 export default {
   name: 'WorkLicenseLineMap',
@@ -45,10 +46,14 @@ export default {
   mounted() {
     this.machineId = this.$route.query.machineId || ''
     this.uploadDate = this.$route.query.uploadDate || this.formatDate(new Date())
+    this.preloadMapScript()
     this.fetchStaffName()
     this.fetchPos()
   },
   methods: {
+    preloadMapScript() {
+      loadScriptOnce(TENCENT_MAP_URL).catch(() => {})
+    },
     formatDate(date) {
       const y = date.getFullYear()
       const m = String(date.getMonth() + 1).padStart(2, '0')
@@ -88,8 +93,13 @@ export default {
         })
       })
     },
-    initMap() {
+    async initMap() {
       if (!this.pos || this.pos.length === 0) {
+        return
+      }
+      try {
+        await loadScriptOnce(TENCENT_MAP_URL)
+      } catch (e) {
         return
       }
       if (typeof TMap === 'undefined') {

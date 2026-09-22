@@ -68,6 +68,7 @@ import { listDispatchFaces } from '@/api/ai/dispatchFaceApi'
 import { getDispatchLog } from '@/api/ai/dispatchApi'
 import { getFaceLog, queryMonitorCamera } from '@/api/ai/faceLogApi'
 import { getCurrentCommunity } from '@/utils/auth'
+import { loadScriptOnce, TENCENT_MAP_URL } from '@/utils/asyncScript'
 
 export default {
   name: 'MonitorMap',
@@ -96,6 +97,7 @@ export default {
   },
   mounted() {
     this.queryDate = this.formatDate(new Date())
+    this.preloadMapScript()
     this.fetchPersonFaces()
     this.fetchMachines()
     this.fetchDispatchLogs()
@@ -181,7 +183,15 @@ export default {
       this.currentImageUrl = url
       this.imageVisible = true
     },
-    initMap() {
+    preloadMapScript() {
+      loadScriptOnce(TENCENT_MAP_URL).catch(() => {})
+    },
+    async initMap() {
+      try {
+        await loadScriptOnce(TENCENT_MAP_URL)
+      } catch (e) {
+        return
+      }
       if (typeof TMap === 'undefined') {
         return
       }

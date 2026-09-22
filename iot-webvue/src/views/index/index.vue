@@ -10,13 +10,14 @@
 <script>
 import { getUserInfo } from '@/api/user/userApi'
 import { setUserInfo as saveUserInfo } from '@/utils/auth'
-import propertyDashboard from './propertyDashboard.vue'
-import adminDashboard from './adminDashboard.vue'
-import devDashboard from './devDashboard.vue'
 
 export default {
   name: 'Dashboard',
-  components: { propertyDashboard, adminDashboard, devDashboard },
+  components: {
+    propertyDashboard: () => import(/* webpackChunkName: "dashboard-property" */ './propertyDashboard.vue'),
+    adminDashboard: () => import(/* webpackChunkName: "dashboard-admin" */ './adminDashboard.vue'),
+    devDashboard: () => import(/* webpackChunkName: "dashboard-dev" */ './devDashboard.vue')
+  },
   data() {
     return {
       loading: true,

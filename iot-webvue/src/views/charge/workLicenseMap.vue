@@ -29,6 +29,7 @@
 <script>
 import { listWorkLicenseMachine } from '@/api/charge/chargeApi'
 import { wgs84togcj02 } from '@/utils/mapUtil'
+import { loadScriptOnce, TENCENT_MAP_URL } from '@/utils/asyncScript'
 
 export default {
   name: 'WorkLicenseMap',
@@ -44,9 +45,13 @@ export default {
     }
   },
   mounted() {
+    this.preloadMapScript()
     this.fetchMachines()
   },
   methods: {
+    preloadMapScript() {
+      loadScriptOnce(TENCENT_MAP_URL).catch(() => {})
+    },
     fetchMachines() {
       const params = {
         page: 1,
@@ -75,8 +80,13 @@ export default {
       }
       this.handleSearch()
     },
-    initMap() {
+    async initMap() {
       if (!this.machines || this.machines.length === 0) {
+        return
+      }
+      try {
+        await loadScriptOnce(TENCENT_MAP_URL)
+      } catch (e) {
         return
       }
       if (typeof TMap === 'undefined') {

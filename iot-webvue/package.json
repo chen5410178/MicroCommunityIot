@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:analyze": "vue-cli-service build --report",
+    "analyze:dist": "node tools/analyze-dist.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -23,6 +25,7 @@
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-router": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
+    "compression-webpack-plugin": "^10.0.0",
     "vue-template-compiler": "^2.6.14"
   }
 }

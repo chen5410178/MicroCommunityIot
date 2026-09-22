@@ -43,7 +43,7 @@ const routes = [
       {
         path: 'pages/index/index',
         name: 'Dashboard',
-        component: () => import('@/views/index/index.vue'),
+        component: () => import(/* webpackChunkName: "page-index" */ '@/views/index/index.vue'),
         meta: { requiresAuth: true, title: '首页' }
       },
       ...devRouter,
@@ -124,8 +124,32 @@ VueRouter.prototype.push = function push(location) {
 
 const whiteList = ['/pages/frame/login', '/pages/frame/sso']
 
+const ROUTE_PROGRESS_DELAY = 200
+const ROUTE_PROGRESS_CLASS = 'route-progress-active'
+let routeProgressTimer = null
+
+function startRouteProgress() {
+  if (routeProgressTimer) {
+    clearTimeout(routeProgressTimer)
+    routeProgressTimer = null
+  }
+  routeProgressTimer = setTimeout(() => {
+    routeProgressTimer = null
+    document.body.classList.add(ROUTE_PROGRESS_CLASS)
+  }, ROUTE_PROGRESS_DELAY)
+}
+
+function endRouteProgress() {
+  if (routeProgressTimer) {
+    clearTimeout(routeProgressTimer)
+    routeProgressTimer = null
+  }
+  document.body.classList.remove(ROUTE_PROGRESS_CLASS)
+}
+
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || '小区物联网系统'
+  startRouteProgress()
   if (whiteList.indexOf(to.path) !== -1) {
     next()
     return
@@ -138,6 +162,14 @@ router.beforeEach((to, from, next) => {
     }
   }
   next()
+})
+
+router.afterEach(() => {
+  endRouteProgress()
+})
+
+router.onError(() => {
+  endRouteProgress()
 })
 
 export default router

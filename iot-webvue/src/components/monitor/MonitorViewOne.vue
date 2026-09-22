@@ -20,6 +20,7 @@
 <script>
 import { getPlayVideoUrl, saveVideoPhoto } from '@/api/monitor/monitorApi'
 import { getCurrentCommunity } from '@/utils/auth'
+import { loadScriptOnce, JESSIBUCA_URL } from '@/utils/asyncScript'
 
 export default {
   name: 'MonitorViewOne',
@@ -75,7 +76,12 @@ export default {
         }
       } catch (e) { /* ignore */ }
     },
-    playVideo(slot) {
+    async playVideo(slot) {
+      try {
+        await loadScriptOnce(JESSIBUCA_URL)
+      } catch (e) {
+        return
+      }
       if (typeof Jessibuca === 'undefined') return
       if (slot.jessibuca) {
         try { slot.jessibuca.destroy() } catch (e) { /* ignore */ }

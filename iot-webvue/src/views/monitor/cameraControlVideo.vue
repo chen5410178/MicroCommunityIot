@@ -47,6 +47,7 @@
 import { getPlayVideoUrl, saveVideoPhoto } from '@/api/monitor/monitorApi'
 import SelectVideoMachine from '@/components/monitor/SelectVideoMachine.vue'
 import { getCurrentCommunity } from '@/utils/auth'
+import { loadScriptOnce, JESSIBUCA_URL } from '@/utils/asyncScript'
 
 export default {
   name: 'CameraControlVideo',
@@ -114,7 +115,13 @@ export default {
         this.$message.error(e.msg || '获取视频地址失败')
       }
     },
-    playVideo(slot, url) {
+    async playVideo(slot, url) {
+      try {
+        await loadScriptOnce(JESSIBUCA_URL)
+      } catch (e) {
+        this.$message.error('视频播放库加载失败')
+        return
+      }
       try {
         if (typeof Jessibuca === 'undefined') {
           this.$message.warning('视频播放库未加载')

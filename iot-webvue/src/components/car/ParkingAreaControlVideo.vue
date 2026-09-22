@@ -81,6 +81,7 @@
 <script>
 import { listBarriers, openBarrierDoor, closeBarrierDoor, getCloudFlvVideo } from '@/api/car/carApi'
 import { getCurrentCommunity } from '@/utils/auth'
+import { loadScriptOnce, JESSIBUCA_URL } from '@/utils/asyncScript'
 
 export default {
   name: 'ParkingAreaControlVideo',
@@ -207,11 +208,17 @@ export default {
       wsUrl = 'ws://' + wsUrl
       this.showCameraVideo(wsUrl, 'receiver2Div')
     },
-    showCameraVideo(wsUrl, divId) {
+    async showCameraVideo(wsUrl, divId) {
       const container = document.getElementById(divId)
       if (!container) return
       if (this.jessibucaMap[divId]) {
         try { this.jessibucaMap[divId].destroy() } catch (e) { /* ignore */ }
+      }
+      try {
+        await loadScriptOnce(JESSIBUCA_URL)
+      } catch (e) {
+        console.warn('Jessibuca 加载失败')
+        return
       }
       if (typeof Jessibuca === 'undefined') {
         console.warn('Jessibuca 未加载')
