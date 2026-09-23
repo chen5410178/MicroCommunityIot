@@ -6,7 +6,6 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarFeeConfigDto;
 import com.java110.intf.barrier.ITempCarFeeConfigV1InnerServiceSMO;
-import com.java110.intf.car.ITempInnerCarV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.List;
 public class SelectTempFeeConfigEngine {
 
     @Autowired
-    private ITempInnerCarV1InnerServiceSMO tempInnerCarV1InnerServiceSMOImpl;
+    private TempInnerCarEngine tempInnerCarEngine;
 
     @Autowired
     private ITempCarFeeConfigV1InnerServiceSMO tempCarFeeConfigV1InnerServiceSMOImpl;
@@ -26,16 +25,11 @@ public class SelectTempFeeConfigEngine {
         TempCarFeeConfigDto tempCarFeeConfigDto = null;
 
         //这里判断是否为内部临时车
-        String carNum = carInoutDto.getCarNum();
-        TempInnerCarDto tempInnerCarDto = new TempInnerCarDto();
-        tempInnerCarDto.setCarNum(carNum);
-        tempInnerCarDto.setPaId(paId);
-        tempInnerCarDto.setValid("Y");
-        List<TempInnerCarDto> tempInnerCarDtos = tempInnerCarV1InnerServiceSMOImpl.queryTempInnerCars(tempInnerCarDto);
-        if (!ListUtil.isNull(tempInnerCarDtos)) {
+        TempInnerCarDto tempInnerCarDto = tempInnerCarEngine.getValidTempInnerCar(carInoutDto.getCarNum(), carInoutDto.getCommunityId(), paId);
+        if (tempInnerCarDto != null) {
             //未缴费
             TempCarFeeConfigDto tempCarFeeConfigParamDto = new TempCarFeeConfigDto();
-            tempCarFeeConfigParamDto.setConfigId(tempInnerCarDtos.get(0).getConfigId());
+            tempCarFeeConfigParamDto.setConfigId(tempInnerCarDto.getConfigId());
             tempCarFeeConfigParamDto.setCommunityId(carInoutDto.getCommunityId());
             List<TempCarFeeConfigDto> tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigParamDto);
             if (!ListUtil.isNull(tempCarFeeConfigDtos)) {

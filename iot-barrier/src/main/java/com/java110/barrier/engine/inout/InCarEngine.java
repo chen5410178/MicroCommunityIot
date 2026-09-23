@@ -56,6 +56,9 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
     private JudgeOwnerCarEngine judgeOwnerCarEngine;
 
     @Autowired
+    private TempInnerCarEngine tempInnerCarEngine;
+
+    @Autowired
     private IBarrierV1InnerServiceSMO machineService;
 
     @Autowired
@@ -165,15 +168,18 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
         }
 
+        // 判断是否为 内部临时车（有效期内），命中后 跳过 临时车进场限制 与 临时车审核 校验
+        boolean tempInnerCar = tempInnerCarEngine.isTempInnerCar(carNum, machineDto.getCommunityId(), getDefaultPaId(parkingAreaDtos));
+
         // todo 校验临时车 是否 允许进场
-        if ("N".equals(parkingAreaDtos.get(0).getTempCarIn())) {
+        if (!tempInnerCar && "N".equals(parkingAreaDtos.get(0).getTempCarIn())) {
             inOutCarTextDto = inOutCarTextEngine.tempCarCannotIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
             saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门失败", type, parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_BLACK, inOutCarTextDto, carNum);
         }
 
         // todo 校验临时车 需要审核
-        if ("Y".equals(parkingAreaDtos.get(0).getTempAuth())) {
+        if (!tempInnerCar && "Y".equals(parkingAreaDtos.get(0).getTempAuth())) {
             inOutCarTextDto = inOutCarTextEngine.tempCarAuthIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
             // todo 保存临时车审核数据，通知HC小区管理系统 确认审核 确认审核后，再开门
             saveTempCarAuthCarInout(carNum, machineDto, inOutCarTextDto, type, parkingAreaDtos);
