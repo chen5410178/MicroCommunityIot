@@ -286,4 +286,5 @@ public interface IInOutCarTextEngine {
      */
     InOutCarTextDto carOutNeedPayFee(String carNum, BarrierDto machineDto, String defaultPaId, CarDayDto carDayDto, TempCarFeeResult result);
 
+    InOutCarTextDto carInPrimaryTempCarCannotIn(String carNum, BarrierDto machineDto, String defaultPaId);
 }

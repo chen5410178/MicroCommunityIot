@@ -143,6 +143,12 @@ public class ZhenshiMqttInOutCarTextEngine implements IInOutCarTextEngine {
         return new InOutCarTextDto("临时车", carNum, "禁止通行", "", "临时车," + carNum + ",禁止通行");
     }
 
+
+    @Override
+    public InOutCarTextDto carInPrimaryTempCarCannotIn(String carNum, BarrierDto machineDto, String defaultPaId) {
+        return new InOutCarTextDto("临时车", carNum, "车位已占用", "禁止通行", "临时车," + carNum + ",车位已占用,禁止通行");
+    }
+
     @Override
     public InOutCarTextDto tempCarAuthIn(String carNum, BarrierDto machineDto, String paId) {
         return new InOutCarTextDto("临时车", carNum, "请等待人工放行", "", "临时车," + carNum + ",请等待人工放行");
@@ -337,4 +343,5 @@ public class ZhenshiMqttInOutCarTextEngine implements IInOutCarTextEngine {
         return new InOutCarTextDto(carNum, "停车" + result.getHours() + "小时" + result.getMin() + "分钟,请交费" + result.getPayCharge() + "元", "", "",
                 carNum + ",停车" + result.getHours() + "小时" + result.getMin() + "分钟,请交费" + result.getPayCharge() + "元");
     }
+
 }

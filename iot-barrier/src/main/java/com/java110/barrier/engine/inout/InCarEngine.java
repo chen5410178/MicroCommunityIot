@@ -174,6 +174,9 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         // todo 校验临时车 是否 允许进场
         if (!tempInnerCar && "N".equals(parkingAreaDtos.get(0).getTempCarIn())) {
             inOutCarTextDto = inOutCarTextEngine.tempCarCannotIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
+            if ("PRIMARY_CAR_IN".equals(carDayDto.getTempCarReason())) {
+                inOutCarTextDto = inOutCarTextEngine.carInPrimaryTempCarCannotIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
+            }
             saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门失败", type, parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_BLACK, inOutCarTextDto, carNum);
         }
