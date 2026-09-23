@@ -60,7 +60,7 @@
 						</view>
 						<view class="ad-info-row" v-else>
 							<text class="c-text-sub">结算方式</text>
-							<text class="ad-info-val">按实际充电量结算 · 剩余金额自动退回余额</text>
+							<text class="ad-info-val">按实际充电量结算</text>
 						</view>
 						<view class="ad-info-row" style="border-top:1rpx solid #e2e8f0;padding-top:16rpx;">
 							<text class="c-text-sub">实付金额</text>
