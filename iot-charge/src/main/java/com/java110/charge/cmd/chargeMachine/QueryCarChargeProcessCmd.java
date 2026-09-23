@@ -9,6 +9,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeProcessAnalysis.ChargeProcessAnalysisDto;
 import com.java110.intf.charge.IChargeProcessAnalysisV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,17 +60,23 @@ public class QueryCarChargeProcessCmd extends Cmd {
             throw new CmdException("未查询到上报数据");
         }
         JSONObject data = new JSONObject();
-        String[] parts = chargeProcessAnalysiss.get(0).getSoc().split("\\.");
+        String soc = StringUtil.isEmpty(chargeProcessAnalysiss.get(0).getSoc()) ? "0" : chargeProcessAnalysiss.get(0).getSoc();
+        String[] parts = soc.split("\\.");
         data.put("process", parts[0]); //充电进度（整数部分）
         data.put("min", chargeProcessAnalysiss.get(0).getRemainingTime()); // 剩余分钟数
+        data.put("chargedMin", chargeProcessAnalysiss.get(0).getAccumulatedChargingTime()); // 累计充电时间（分钟）
         data.put("charged", chargeProcessAnalysiss.get(0).getChargingDegree()); // 已充电量
         data.put("chargeMoney", chargeProcessAnalysiss.get(0).getRechargeAmount()); //已充金额
         data.put("electric", chargeProcessAnalysiss.get(0).getOutputCurrent()); // 电流
         data.put("voltage", chargeProcessAnalysiss.get(0).getOutputVoltage()); // 电压
         data.put("temperature", chargeProcessAnalysiss.get(0).getGunLineTem()); // 枪线温度
 
-        BigDecimal volDec = new BigDecimal(chargeProcessAnalysiss.get(0).getOutputVoltage());
-        volDec = volDec.multiply(new BigDecimal(chargeProcessAnalysiss.get(0).getOutputCurrent()))
+        String outputVoltage = StringUtil.isEmpty(chargeProcessAnalysiss.get(0).getOutputVoltage()) ? "0" :
+                chargeProcessAnalysiss.get(0).getOutputVoltage();
+        String outputCurrent = StringUtil.isEmpty(chargeProcessAnalysiss.get(0).getOutputCurrent()) ? "0" :
+                chargeProcessAnalysiss.get(0).getOutputCurrent();
+        BigDecimal volDec = new BigDecimal(outputVoltage);
+        volDec = volDec.multiply(new BigDecimal(outputCurrent))
                 .divide(new BigDecimal("1000"), 2, BigDecimal.ROUND_HALF_UP);
         data.put("energy", volDec.doubleValue() + "");
 

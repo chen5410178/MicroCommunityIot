@@ -83,7 +83,7 @@
 							<text class="od-stat-val">{{ kwhText }}</text>
 						</view>
 						<view class="od-stat">
-							<text class="od-stat-label">已充费用</text>
+							<text class="od-stat-label">{{ order.type === 'car' ? '已充费用（实时）' : '已充费用' }}</text>
 							<text class="od-stat-val">¥{{ fee.toFixed(2) }}</text>
 						</view>
 					</view>
@@ -98,7 +98,7 @@
 						<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">{{ order.way }}</text></view>
 						<view class="od-info-row"><text class="c-text-sub">充电开始时间</text><text class="od-info-val">{{ order.startTime || '—' }}</text></view>
 						<view class="od-info-row"><text class="c-text-sub">订单状态</text><text class="od-info-val">{{ order.st }}</text></view>
-						<view class="od-info-row"><text class="c-text-sub">已充费用</text><text class="od-info-val" :style="{ color: '#059669', fontWeight: 700 }">¥{{ order.fee.toFixed(2) }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">已充费用</text><text class="od-info-val" :style="{ color: '#059669', fontWeight: 700 }">¥{{ fee.toFixed(2) }}</text></view>
 					</view>
 				</view>
 
@@ -207,7 +207,8 @@
 		adaptOrderList
 	} from '@/api/charge/orderAdapter.js'
 	import {
-		queryPhoneChargeOrder
+		queryPhoneChargeOrder,
+		queryCarChargeProcess
 	} from '@/packageCharge/api/chargeApi.js'
 	import {
 		stopCharge,
@@ -237,8 +238,8 @@
 				order: null,
 				orderLoaded: false,
 				timeText: '00:00',
-				powerText: '0W',
-				kwhText: '—',
+				powerText: '0.00 kW',
+				kwhText: '0.00 度',
 				fee: 0,
 				note: '正在连接车辆 · 请稍候…',
 				stopShow: false,
@@ -248,6 +249,11 @@
 				settle: null,
 				tariffs: JSON.parse(JSON.stringify(defaultTariffs)),
 				timer: null,
+				pollTimer: null,
+				pollTick: 0,
+				alive: false,
+				chargeMins: 0,
+				chargeBaseTs: 0,
 				toastMsg: ''
 			}
 		},
@@ -321,21 +327,139 @@
 			if (this.mode === 'running' && chargeStore.runningOrder) {
 				this._startTimer()
 				this._refreshRunning()
+				return
+			}
+			if (this.order && this.order.state === '1001' && !this.stopped) {
+				this._startOrderTimer()
+				this._startPolling()
 			}
 		},
 		onHide() {
-			this._stopTimer()
+			this._clearTimers()
 		},
 		onUnload() {
-			this._stopTimer()
+			this._clearTimers()
+		},
+		onBackPress() {
+			this._clearTimers()
+			return false
 		},
 		methods: {
+			// 定时器统一清理：本地计时器 + 数据轮询
+			_clearTimers() {
+				this._stopTimer()
+				this._stopPolling()
+			},
 			_startTimer() {
 				this._stopTimer()
 				this.timer = setInterval(() => {
 					chargeStore.simulateTick()
 					this._refreshRunning()
 				}, 1000)
+			},
+			// 数据轮询：汽车 5s 拉进度接口，电瓶车 30s 拉订单
+			_startPolling() {
+				this._stopPolling()
+				this.alive = true
+				this.pollTick = 0
+				if (this.order && this.order.type === 'car') {
+					this._loadCarProcess()
+					this.pollTimer = setInterval(() => this._loadCarProcess(), 5000)
+					return
+				}
+				this._loadBikeOrder()
+				this.pollTimer = setInterval(() => this._loadBikeOrder(), 30000)
+			},
+			_stopPolling() {
+				this.alive = false
+				if (this.pollTimer) clearInterval(this.pollTimer)
+				this.pollTimer = null
+			},
+			// 汽车在充：真实进度（功率/电量/费用/时长基准）
+			_loadCarProcess() {
+				const o = this.order
+				if (!this.alive || !o || o.state !== '1001') return
+				this.pollTick++
+				queryCarChargeProcess({
+					orderId: o.orderId,
+					communityId: o.communityId || getCommunityId()
+				}).then(res => {
+					if (!this.alive) return
+					const d = (res && res.code == 0 && res.data) ? res.data : null
+					if (!d) {
+						this._setProcessZero()
+						this._checkOrderState()
+						return
+					}
+					this.fee = parseFloat(d.chargeMoney || 0) || 0
+					this.kwhText = (parseFloat(d.charged || 0) || 0).toFixed(2) + ' 度'
+					this.powerText = (parseFloat(d.energy || 0) || 0).toFixed(2) + ' kW'
+					this.note = '电压 ' + (d.voltage || 0) + 'V · 电流 ' + (d.electric || 0) + 'A · 枪温 ' + (d.temperature ||
+						0) + '°C · 金额耗尽自动断电'
+					if (parseInt(d.chargedMin || 0) > 0) {
+						this.chargeMins = parseInt(d.chargedMin) || 0
+						this.chargeBaseTs = Date.now()
+					}
+					this._checkOrderState()
+				}).catch(() => {
+					if (!this.alive) return
+					this._setProcessZero()
+					this._checkOrderState()
+				})
+			},
+			// 每 6 次轮询（约 30s）同步一次订单状态
+			_checkOrderState() {
+				if (this.pollTick % 6 === 0) this._syncOrderState()
+			},
+			// 轮询中同步订单状态：已结束则停止轮询并按对应视图渲染
+			_syncOrderState() {
+				if (!this.alive || !this.orderId) return
+				queryPhoneChargeOrder({
+					orderId: this.orderId,
+					page: 1,
+					row: 10
+				}).then(res => {
+					if (!this.alive) return
+					const list = adaptOrderList(res.data)
+					const o = list.length ? list[0] : null
+					if (!o) return
+					o.startTime = o.startTime || (this.order ? this.order.startTime : '')
+					this.order = o
+					if (o.state !== '1001') {
+						this._clearTimers()
+					}
+				}).catch(() => {})
+			},
+			// 电瓶车在充：按订单真实 energy 刷新（无实时上报来源，功率/费用不展示造数值）
+			_loadBikeOrder() {
+				if (!this.alive || !this.orderId) return
+				queryPhoneChargeOrder({
+					orderId: this.orderId,
+					page: 1,
+					row: 10
+				}).then(res => {
+					if (!this.alive) return
+					const list = adaptOrderList(res.data)
+					const o = list.length ? list[0] : null
+					if (!o) return
+					o.startTime = o.startTime || (this.order ? this.order.startTime : '')
+					this.order = o
+					if (o.state !== '1001') {
+						this._clearTimers()
+						return
+					}
+					this.powerText = '0.00 kW'
+					this.fee = 0
+					this.kwhText = (parseFloat(o.kwh || 0) || 0).toFixed(2) + ' 度'
+					this._refreshOrderTime()
+				}).catch(() => {})
+			},
+			// 无有效上报数据：功率/电量/费用统一置 0（不兜底订单字段）
+			_setProcessZero() {
+				this.powerText = '0.00 kW'
+				this.kwhText = '0.00 度'
+				this.fee = 0
+				this.note = '按电量计费 · 金额耗尽自动断电'
 			},
 			// 历史订单/在充订单：按 orderId 查真实接口
 			_loadOrder() {
@@ -357,32 +481,44 @@
 					this.orderLoaded = true
 					if (this.order && this.order.state === '1001') {
 						this._initRunningView()
+						this._startPolling()
 					}
 				}).catch(() => {
 					this.order = null
 					this.orderLoaded = true
 				})
 			},
-			// 在充订单视图：以接口订单字段为准，仅本地刷新已充时长
+			// 在充订单视图：指标以设备上报为准，进入页面先置 0，等待轮询回填
 			_initRunningView() {
 				const o = this.order
 				if (!o) return
-				this.powerText = o.type === 'car' ? '7.0kW' : '220W'
-				this.kwhText = o.kwh > 0 ? o.kwh.toFixed(2) + ' 度' : '—'
-				this.fee = o.fee
+				this.powerText = '0.00 kW'
+				this.kwhText = '0.00 度'
+				this.fee = 0
 				this.note = o.type === 'car' ? '按电量计费 · 金额耗尽自动断电' : '充满自停 / 定时断电'
+				this.chargeMins = 0
+				this.chargeBaseTs = 0
 				this._refreshOrderTime()
+				this._startOrderTimer()
+			},
+			// 已充时长本地秒级刷新
+			_startOrderTimer() {
 				this._stopTimer()
 				this.timer = setInterval(() => {
 					this._refreshOrderTime()
 				}, 1000)
 			},
-			// 在充时长实时刷新（仅刷新时长，无本地假数据）
+			// 在充时长：优先设备累计充电时间平滑递增，兜底订单 start_time
 			_refreshOrderTime() {
 				const o = this.order
-				if (!o || !o.startTime) return
-				const t = new Date(String(o.startTime).replace(/-/g, '/')).getTime()
-				const sec = isNaN(t) ? 0 : Math.max(0, Math.floor((Date.now() - t) / 1000))
+				if (!o) return
+				let sec = 0
+				if (this.chargeMins > 0 && this.chargeBaseTs > 0) {
+					sec = this.chargeMins * 60 + Math.floor((Date.now() - this.chargeBaseTs) / 1000)
+				} else if (o.startTime) {
+					const t = new Date(String(o.startTime).replace(/-/g, '/')).getTime()
+					sec = isNaN(t) ? 0 : Math.max(0, Math.floor((Date.now() - t) / 1000))
+				}
 				this.timeText = ('0' + Math.floor(sec / 60)).slice(-2) + ':' + ('0' + sec % 60).slice(-2)
 			},
 			_stopTimer() {
@@ -397,11 +533,9 @@
 				this.fee = chargeStore.chgFee
 				this.kwhText = chargeStore.chgKwh.toFixed(2) + ' 度'
 				const cfg = this.chgTypes[r.type]
-				this.powerText = r.type === 'car' ? ([6.92, 7.0, 7.04, 6.98, 7.01][sec % 5]).toFixed(1) + 'kW' : [215,
-					220, 224, 219, 222
-				][sec % 5] + 'W'
-				this.note = r.type === 'car' ? '电压 ' + cfg.volt + 'V · 电流 ' + cfg.amp + 'A · 按电量计费 · 金额耗尽自动断电' : '电压 ' +
-					cfg.volt + 'V · 电流 ' + cfg.amp + 'A · 充满自停 / 定时断电'
+				this.powerText = '0.00 kW'
+				this.note = '电压 ' + cfg.volt + 'V · 电流 ' + cfg.amp + 'A · ' + (r.type === 'car' ? '按电量计费 · 金额耗尽自动断电' :
+					'充满自停 / 定时断电')
 			},
 			_orderEnd(date, mins) {
 				let d = new Date()
@@ -481,7 +615,7 @@
 					o.state = '4004'
 					o.st = '已停止'
 					this.stopped = true
-					this._stopTimer()
+					this._clearTimers()
 					this._toast('已提交停止，结算完成后自动更新')
 				}).catch(() => {
 					this.stopping = false
@@ -498,8 +632,8 @@
 				this._stopAndBack()
 			},
 			_stopAndBack() {
-				this._stopTimer()
-				uni.navigateTo({
+				this._clearTimers()
+				uni.redirectTo({
 					url: '/packageCharge/pages/charge/chargeOrders'
 				})
 			},

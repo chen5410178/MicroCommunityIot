@@ -52,8 +52,12 @@
 						</view>
 						<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ r.date }} · {{ r.way }} · {{ r.mins }} 分钟{{ r.kwh ? ' · 用电 ' + r.kwh.toFixed(2) + ' 度' : '' }}</text>
 					</view>
-					<view style="text-align:right;">
-						<text class="co-item-fee" :class="r.fee > 0 ? 'pay' : 'free'">{{ r.fee > 0 ? '-¥' + r.fee.toFixed(2) : '免费' }}</text>
+					<view style="text-align:right;flex-shrink:0;">
+						<view class="co-charging-tag" v-if="r.state === '1001'">
+							<view class="c-pulse-dot" style="width:12rpx;height:12rpx;border-radius:50%;background:#059669;"></view>
+							<text>充电中</text>
+						</view>
+						<text class="co-item-fee" :class="r.fee > 0 ? 'pay' : 'free'">{{ r.state === '1001' ? '点击查看详情 ›' : (r.fee > 0 ? '-¥' + r.fee.toFixed(2) : '免费') }}</text>
 						<text class="c-text-sub" style="display:block;margin-top:4rpx;">{{ r.st }}</text>
 					</view>
 				</view>
@@ -207,11 +211,22 @@
 				this.page = 1
 				this._loadOrders()
 			},
+			// 按「状态 + 车型」分流：充电中按两轮/四轮分开，其余进已完成详情
 			openOrder(i) {
 				const r = this.orders[i]
 				if (!r || !r.orderId) return
+				const type = r.type === 'car' ? 'car' : 'bike'
+				const chargeType = type === 'car' ? '1002' : '1001'
+				let path
+				if (r.state === '1001') {
+					path = type === 'car' ?
+						'/packageCharge/pages/charge/carChargingDetail' :
+						'/packageCharge/pages/charge/bikeChargingDetail'
+				} else {
+					path = '/packageCharge/pages/charge/orderDone'
+				}
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/orderDetail?orderId=' + r.orderId
+					url: path + '?orderId=' + r.orderId + '&chargeType=' + chargeType
 				})
 			},
 			_toast(msg) {
@@ -419,6 +434,20 @@
 
 	.co-item-fee.free {
 		color: #059669;
+	}
+
+	.co-charging-tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 8rpx;
+		font-size: 20rpx;
+		font-weight: 700;
+		color: #059669;
+		background: rgba(16, 185, 129, .1);
+		border: 1rpx solid rgba(16, 185, 129, .3);
+		border-radius: 999rpx;
+		padding: 4rpx 16rpx;
+		margin-bottom: 8rpx;
 	}
 
 	.co-empty {

@@ -132,6 +132,30 @@ export function queryPhoneChargeOrder(_objData) {
 }
 
 /**
+ * 查询汽车充电进度（轮询用 · GET 静默，不触发全局 loading）
+ * 返回完整响应 { code, msg, data }
+ */
+export function queryCarChargeProcess(_objData) {
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.queryCarChargeProcess,
+			method: "GET",
+			data: _objData,
+			success: function(res) {
+				if (res.statusCode != 200 || !res.data || res.data.code != 0) {
+					reject(res.data)
+					return
+				}
+				resolve(res.data)
+			},
+			fail: function(res) {
+				reject(res)
+			}
+		})
+	})
+}
+
+/**
  * 充电订单退款
  */
 export function orderRefundMoney(_objData) {

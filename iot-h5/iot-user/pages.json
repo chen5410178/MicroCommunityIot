@@ -222,6 +222,27 @@
 					}
 				},
 				{
+					"path": "pages/charge/carChargingDetail",
+					"style": {
+						"navigationBarTitleText": "汽车充电中",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/bikeChargingDetail",
+					"style": {
+						"navigationBarTitleText": "电瓶车充电中",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/orderDone",
+					"style": {
+						"navigationBarTitleText": "订单详情",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
 					"path": "pages/charge/invoice",
 					"style": {
 						"navigationBarTitleText": "电子发票",
