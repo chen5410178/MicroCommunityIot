@@ -74,7 +74,6 @@ public class AccessControlLogV1InnerServiceSMOImpl implements IAccessControlLogV
             invalidInfo.put("machineId", accessControlLogPo.getMachineId());
             invalidInfo.put("userId", accessControlLogPo.getUserId());
             invalidInfo.put("logCmds", invalidLogCmds);
-            invalidInfo.put("states", Arrays.asList(AccessControlLogDto.STATE_RES, AccessControlLogDto.STATE_FAIL));
             accessControlLogV1ServiceDaoImpl.updateAccessControlLogInfoInvalid(invalidInfo);
         }
 

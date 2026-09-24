@@ -90,7 +90,7 @@ public class AccessControlLogV1ServiceDaoImpl extends BaseServiceDao implements 
     }
 
     /**
-     * 将同一设备、同一人员、同一命令的已同步历史有效下发记录置为失效
+     * 将同一设备、同一人员、同一命令的历史有效下发记录置为失效
      * @param info 修改信息
      * @throws DAOException DAO异常
      */

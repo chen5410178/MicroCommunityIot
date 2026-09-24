@@ -144,7 +144,7 @@
 
     </update>
 
-    <!-- 将同一设备、同一人员、同一命令的已同步历史有效下发记录置为失效 -->
+    <!-- 将同一设备、同一人员、同一命令的历史有效下发记录置为失效 -->
     <update id="updateAccessControlLogInfoInvalid" parameterType="Map">
         update access_control_log t
         set t.status_cd = '1'
@@ -158,12 +158,6 @@
         <if test="logCmds != null ">
             and t.log_cmd in
             <foreach collection="logCmds" item="item" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
-        <if test="states != null ">
-            and t.state in
-            <foreach collection="states" item="item" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
