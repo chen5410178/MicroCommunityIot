@@ -32,6 +32,7 @@ public class SyncOneUserCardBmoImpl implements ISyncOneUserCardBmo {
 //        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         accessControlLogDto.setLogAction("/v3_1/sync/cards/add/sync");
         accessControlLogDto.setMachineCode(machineCode);
+        accessControlLogDto.setStatusCd(AccessControlLogDto.STATUS_NORMAL);
         if (!"0".equals(t)) {
             long ts = Long.parseLong(t);
             if (ts > 9999999999L) {

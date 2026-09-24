@@ -26,6 +26,12 @@
           </div>
           <el-form :inline="true" :model="queryParams">
             <el-form-item>
+              <el-radio-group v-model="queryParams.statusCd" @change="handleSearch">
+                <el-radio-button label="0">有效</el-radio-button>
+                <el-radio-button label="1">失效</el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item>
               <el-input v-model="queryParams.userName" placeholder="请输入用户名" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>
@@ -123,6 +129,7 @@ export default {
         userName: '',
         logAction: '',
         state: '',
+        statusCd: '0',
         queryStartTime: '',
         queryEndTime: ''
       }
@@ -182,6 +189,7 @@ export default {
         userName: '',
         logAction: '',
         state: '',
+        statusCd: '0',
         queryStartTime: '',
         queryEndTime: ''
       }

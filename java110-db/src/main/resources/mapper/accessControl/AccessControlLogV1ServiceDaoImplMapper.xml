@@ -8,9 +8,9 @@
     <!-- 保存门禁日志信息 add by wuxw 2018-07-03 -->
     <insert id="saveAccessControlLogInfo" parameterType="Map">
         insert into access_control_log(
-        res_param,machine_id,log_id,req_param,state,community_id,user_name,log_action,user_id,log_cmd
+        res_param,machine_id,log_id,req_param,state,community_id,user_name,log_action,user_id,log_cmd,status_cd
         ) values (
-        #{resParam},#{machineId},#{logId},#{reqParam},#{state},#{communityId},#{userName},#{logAction},#{userId},#{logCmd}
+        #{resParam},#{machineId},#{logId},#{reqParam},#{state},#{communityId},#{userName},#{logAction},#{userId},#{logCmd},#{statusCd}
         )
     </insert>
 
@@ -21,7 +21,7 @@
         logId,t.state,t.community_id,t.community_id communityId,t.user_name,t.user_name
         userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId,
         ac.machine_code machineCode,ac.machine_name machineName,td.name stateName,t.create_time createTime,
-        t.log_cmd logCmd,td1.name logCmdName
+        t.log_cmd logCmd,td1.name logCmdName,t.status_cd statusCd
         from access_control_log t
         left join access_control ac on ac.machine_id = t.machine_id and ac.status_cd = '0'
         left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns = 'state'
@@ -78,6 +78,15 @@
                 #{item}
             </foreach>
         </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="statusCds != null ">
+            and t.status_cd in
+            <foreach collection="statusCds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -121,6 +130,9 @@
             <if test="logAction !=null and logAction != ''">
                  t.log_action= #{logAction},
             </if>
+            <if test="statusCd !=null and statusCd != ''">
+                 t.status_cd= #{statusCd},
+            </if>
             <if test="userId !=null and userId != ''">
                  t.user_id= #{userId}
             </if>
@@ -130,6 +142,31 @@
             and t.log_id= #{logId}
         </if>
 
+    </update>
+
+    <!-- 将同一设备、同一人员、同一命令的已同步历史有效下发记录置为失效 -->
+    <update id="updateAccessControlLogInfoInvalid" parameterType="Map">
+        update access_control_log t
+        set t.status_cd = '1'
+        where t.status_cd = '0'
+        <if test="machineId != null and machineId != ''">
+            and t.machine_id = #{machineId}
+        </if>
+        <if test="userId != null and userId != ''">
+            and t.user_id = #{userId}
+        </if>
+        <if test="logCmds != null ">
+            and t.log_cmd in
+            <foreach collection="logCmds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="states != null ">
+            and t.state in
+            <foreach collection="states" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
     </update>
 
     <!-- 查询门禁日志数量 add by wuxw 2018-07-03 -->
@@ -182,6 +219,15 @@
         <if test="userIds !=null ">
             and t.user_id in
             <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="statusCds != null ">
+            and t.status_cd in
+            <foreach collection="statusCds" item="item" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>

@@ -208,9 +208,9 @@ CREATE TABLE `access_control_log` (
   `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `log_cmd` varchar(12) DEFAULT NULL COMMENT 'cmd',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 -- ----------------------------
 -- Records of access_control_log
 -- ----------------------------

@@ -1,5 +1,5 @@
 const isProd = process.env.NODE_ENV === 'production'
-
+const outputDir = process.env.OUTPUT_DIR || 'iotWeb'
 let CompressionWebpackPlugin = null
 try {
   CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -29,6 +29,7 @@ function buildCompressPlugins() {
 }
 
 module.exports = {
+	outputDir: outputDir, // ✅ 使用环境变量作为输出目录
   devServer: {
     port: 3002,
     proxy: {

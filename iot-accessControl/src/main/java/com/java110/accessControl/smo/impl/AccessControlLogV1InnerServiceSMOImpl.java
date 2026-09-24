@@ -19,6 +19,8 @@ package com.java110.accessControl.smo.impl;
 import com.java110.accessControl.dao.IAccessControlLogV1ServiceDao;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
 import com.java110.po.accessControlLog.AccessControlLogPo;
@@ -27,7 +29,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -44,10 +49,45 @@ public class AccessControlLogV1InnerServiceSMOImpl implements IAccessControlLogV
     private IAccessControlLogV1ServiceDao accessControlLogV1ServiceDaoImpl;
 
 
+    private static final List<String> CONFIG_LOG_CMDS = Arrays.asList(
+            AccessControlLogDto.CMD_ADD_FACE,
+            AccessControlLogDto.CMD_UPDATE_FACE,
+            AccessControlLogDto.CMD_DELETE_FACE,
+            AccessControlLogDto.CMD_ADD_CARD,
+            AccessControlLogDto.CMD_DELETE_CARD,
+            AccessControlLogDto.CMD_ADD_USER,
+            AccessControlLogDto.CMD_DELETE_USER);
+
+
     @Override
     public int saveAccessControlLog(@RequestBody AccessControlLogPo accessControlLogPo) {
+        if (StringUtil.isEmpty(accessControlLogPo.getStatusCd())) {
+            accessControlLogPo.setStatusCd(AccessControlLogDto.STATUS_NORMAL);
+        }
+
+        List<String> invalidLogCmds = getInvalidLogCmds(accessControlLogPo.getLogCmd());
+
+        if (!ListUtil.isNull(invalidLogCmds)
+                && !StringUtil.isEmpty(accessControlLogPo.getMachineId())
+                && !StringUtil.isEmpty(accessControlLogPo.getUserId())) {
+            Map<String, Object> invalidInfo = new HashMap<>();
+            invalidInfo.put("machineId", accessControlLogPo.getMachineId());
+            invalidInfo.put("userId", accessControlLogPo.getUserId());
+            invalidInfo.put("logCmds", invalidLogCmds);
+            invalidInfo.put("states", Arrays.asList(AccessControlLogDto.STATE_RES, AccessControlLogDto.STATE_FAIL));
+            accessControlLogV1ServiceDaoImpl.updateAccessControlLogInfoInvalid(invalidInfo);
+        }
+
         int saveFlag = accessControlLogV1ServiceDaoImpl.saveAccessControlLogInfo(BeanConvertUtil.beanCovertMap(accessControlLogPo));
         return saveFlag;
+    }
+
+    private List<String> getInvalidLogCmds(String logCmd) {
+        if (StringUtil.isEmpty(logCmd) || !CONFIG_LOG_CMDS.contains(logCmd)) {
+            return new ArrayList<>();
+        }
+
+        return Arrays.asList(logCmd);
     }
 
     @Override

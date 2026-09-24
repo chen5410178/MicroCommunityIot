@@ -729,3 +729,11 @@ INSERT INTO `c_route` VALUES ('102026091800000001', '992023111817510002', '98202
 INSERT INTO `c_service` VALUES ('982026091900000001', 'login.appUserSmsLogin', 'API', '手机用户短信验证码登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-19 14:42:17', '0');
 INSERT INTO `c_route` VALUES ('102026091900000001', '992023111817510002', '982026091900000001', 'D', '1000', 'S', '2026-09-19 14:42:17', '0');
 ```
+
+
+
+### 2026-09-24 门禁下发日志增加数据状态「有效/失效」。
+```sql
+-- access_control_log 增加数据状态status_cd 0有效/1失效
+ALTER TABLE `access_control_log` ADD COLUMN `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效' AFTER `log_cmd`;
+```

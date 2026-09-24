@@ -36,6 +36,10 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     public static final String CMD_REBOOT = "REBOOT"; // todo 重启
 
     public static final String CMD_OPEN_DOOR = "OPEN_DOOR"; // todo 开门
+
+    public static final String STATUS_NORMAL = "0"; // todo 有效
+
+    public static final String STATUS_INVALID = "1"; // todo 失效
     private String resParam;
     private String machineId;
     private String logId;
@@ -53,6 +57,8 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     private Date createTime;
 
     private String statusCd = "0";
+
+    private String[] statusCds;
 
     private String machineName;
 
@@ -162,6 +168,14 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String[] getStatusCds() {
+        return statusCds;
+    }
+
+    public void setStatusCds(String[] statusCds) {
+        this.statusCds = statusCds;
     }
 
     public String getMachineName() {

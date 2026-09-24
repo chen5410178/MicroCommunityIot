@@ -64,6 +64,14 @@ public interface IAccessControlLogV1ServiceDao {
 
 
     /**
+     * 将同一设备、同一人员、同一命令的已同步历史有效下发记录置为失效
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    int updateAccessControlLogInfoInvalid(Map info) throws DAOException;
+
+
+    /**
      * 查询门禁日志总数
      *
      * @param info 门禁日志信息
