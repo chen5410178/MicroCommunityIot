@@ -40,6 +40,8 @@ public class AccessControlLogPo implements Serializable {
 
     private String logCmd;
 
+    private String statusCd;
+
     public String getResParam() {
         return resParam;
     }
@@ -118,5 +120,13 @@ public class AccessControlLogPo implements Serializable {
 
     public void setLogCmd(String logCmd) {
         this.logCmd = logCmd;
+    }
+
+    public String getStatusCd() {
+        return statusCd;
+    }
+
+    public void setStatusCd(String statusCd) {
+        this.statusCd = statusCd;
     }
 }

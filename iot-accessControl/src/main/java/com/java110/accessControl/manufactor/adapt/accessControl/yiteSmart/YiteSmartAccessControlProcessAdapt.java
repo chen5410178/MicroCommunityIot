@@ -197,6 +197,10 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
             MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
 
+            if (StringUtil.isEmpty(accessControlFacePo.getCardNumber())) {
+                return true;
+            }
+
             //todo 人员卡信息
 
             param = syncUserCardImpl.getUserDeleteCard(accessControlDto, accessControlFacePo);

@@ -89,6 +89,20 @@ public class AccessControlLogV1ServiceDaoImpl extends BaseServiceDao implements 
         return saveFlag;
     }
 
+    /**
+     * 将同一设备、同一人员、同一命令的历史有效下发记录置为失效
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public int updateAccessControlLogInfoInvalid(Map info) throws DAOException {
+        logger.debug("修改 updateAccessControlLogInfoInvalid 入参 info : {}",info);
+
+        int saveFlag = sqlSessionTemplate.update("accessControlLogV1ServiceDaoImpl.updateAccessControlLogInfoInvalid",info);
+
+        return saveFlag;
+    }
+
      /**
      * 查询门禁日志数量
      * @param info 门禁日志信息

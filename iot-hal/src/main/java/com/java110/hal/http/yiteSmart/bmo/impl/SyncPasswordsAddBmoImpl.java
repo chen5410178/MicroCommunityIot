@@ -35,6 +35,7 @@ public class SyncPasswordsAddBmoImpl implements ISyncPasswordsAddBmo {
             accessControlLogDto.setLogAction("/v3_1/sync/passwords/add/sync");
             accessControlLogDto.setMachineCode(machineCode);
             accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
+            accessControlLogDto.setStatusCd(AccessControlLogDto.STATUS_NORMAL);
 
             if (!"0".equals(t)) {
                 long ts = Long.parseLong(t);

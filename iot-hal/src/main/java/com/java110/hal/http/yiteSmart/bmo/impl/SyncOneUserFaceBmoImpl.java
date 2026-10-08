@@ -31,6 +31,7 @@ public class SyncOneUserFaceBmoImpl implements ISyncOneUserFaceBmo {
 //        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         accessControlLogDto.setLogAction("/device/v2/face/sync");
         accessControlLogDto.setMachineCode(machineCode);
+        accessControlLogDto.setStatusCd(AccessControlLogDto.STATUS_NORMAL);
         accessControlLogDto.setPage(page);
         accessControlLogDto.setRow(row);
         if (!"0".equals(t)) {
@@ -62,6 +63,7 @@ public class SyncOneUserFaceBmoImpl implements ISyncOneUserFaceBmo {
             checkDto.setMachineCode(machineCode);
             checkDto.setUserId(selectedLog.getUserId());
             checkDto.setLogCmd(AccessControlLogDto.CMD_ADD_USER);
+            checkDto.setStatusCd(AccessControlLogDto.STATUS_NORMAL);
             List<AccessControlLogDto> checkList = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(checkDto);
             if (!ListUtil.isNull(checkList)) {
                 JSONObject noData = new JSONObject();
