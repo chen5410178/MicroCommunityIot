@@ -235,7 +235,7 @@ export default {
           debug: false,
           isNotMute: false
         })
-        jessibuca.play(wsUrl)
+        jessibuca.play(wsUrl).catch(() => { /* 播放失败忽略：设备离线或地址不可达时避免未捕获的 Promise 拒绝 */ })
         this.jessibucaMap[divId] = jessibuca
       } catch (e) {
         console.error('Jessibuca 初始化失败', e)

@@ -77,8 +77,17 @@ export default {
         pccIds: [],
         inoutId: '',
         remark: ''
-      },
-      rules: {
+      }
+    }
+  },
+  computed: {
+    rules() {
+      if (this.form.type === '1101') {
+        return {
+          carNum: [{ required: true, message: '车牌号不能为空', trigger: 'blur' }]
+        }
+      }
+      return {
         carNum: [{ required: true, message: '车牌号不能为空', trigger: 'blur' }],
         amount: [{ required: true, message: '实收金额不能为空', trigger: 'blur' }],
         machineId: [{ required: true, message: '出场道闸不能为空', trigger: 'change' }],
@@ -100,10 +109,10 @@ export default {
       this.resetForm()
       this.dialogVisible = true
       Object.assign(this.form, {
-        type: '1102',
+        type: data.type === '1101' ? '1101' : '1102',
         carNum: data.carNum || '',
         payCharge: data.payCharge || '',
-        amount: data.payCharge || '',
+        amount: data.payCharge || data.amount || '',
         machineId: data.machineId || '',
         boxId: data.boxId || '',
         paId: data.paId || ''

@@ -102,7 +102,7 @@ export default {
         supportDblclickFullscreen: true
       })
       slot.jessibuca = jessibuca
-      jessibuca.play(slot.url)
+      jessibuca.play(slot.url).catch(() => { /* 播放失败忽略：设备离线或地址不可达时避免未捕获的 Promise 拒绝 */ })
       jessibuca.on('start', () => {
         setTimeout(() => {
           try {

@@ -92,7 +92,7 @@ export default {
           }
         })
         this.jessibuca = jessibuca
-        jessibuca.play(url)
+        jessibuca.play(url).catch(() => { /* 播放失败忽略：设备离线或地址不可达时避免未捕获的 Promise 拒绝 */ })
         jessibuca.on('start', () => {
           this.started = true
         })
