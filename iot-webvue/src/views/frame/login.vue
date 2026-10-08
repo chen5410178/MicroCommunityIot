@@ -48,7 +48,7 @@
 import { pcUserLogin } from '@/api/login/loginApi'
 import { listSystemInfo } from '@/api/login/systemApi'
 import { listMyStore, listMyEnteredCommunitys, queryStaffPrivileges } from '@/api/community/communityApi'
-import { setSystemInfo, setCommunityList, setCurrentCommunity, setUserInfo } from '@/utils/auth'
+import { setSystemInfo, setCommunityList, setCurrentCommunity, setUserInfo, clearAll } from '@/utils/auth'
 import SliderVerify from '@/components/frame/SliderVerify'
 
 export default {
@@ -67,9 +67,15 @@ export default {
     }
   },
   mounted() {
+    this.initLoginState()
     this.loadSysInfo()
   },
   methods: {
+    initLoginState() {
+      const lang = sessionStorage.getItem('iot_webvue_lang')
+      clearAll()
+      sessionStorage.setItem('iot_webvue_lang', lang || 'zh-cn')
+    },
     loadSysInfo() {
       listSystemInfo({ page: 1, row: 1 }).then(res => {
         let data = res
