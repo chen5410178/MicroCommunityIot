@@ -4,6 +4,7 @@
       <div class="left-panel">
         <FloorUnitTree
           ref="floorUnitTreeRef"
+          :default-expand-all="true"
           @switchFloor="handleSwitchFloor"
           @switchUnit="handleSwitchUnit"
         />

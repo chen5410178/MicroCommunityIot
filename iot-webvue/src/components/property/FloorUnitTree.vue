@@ -1,19 +1,21 @@
 <template>
   <div class="floor-unit-tree">
     <el-card shadow="never" class="tree-card">
-      <el-tree
-        ref="tree"
-        :data="treeData"
-        node-key="id"
-        default-expand-all
-        highlight-current
-        :expand-on-click-node="true"
-        @node-click="handleNodeClick"
-      >
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <span>{{ data.label }}</span>
-        </span>
-      </el-tree>
+      <div class="tree-scroll">
+        <el-tree
+          ref="tree"
+          :data="treeData"
+          node-key="id"
+          :default-expand-all="defaultExpandAll"
+          highlight-current
+          :expand-on-click-node="true"
+          @node-click="handleNodeClick"
+        >
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{ data.label }}</span>
+          </span>
+        </el-tree>
+      </div>
     </el-card>
   </div>
 </template>
@@ -23,6 +25,9 @@ import { queryFloorAndUnits } from '@/api/property/floorApi'
 
 export default {
   name: 'FloorUnitTree',
+  props: {
+    defaultExpandAll: { type: Boolean, default: false }
+  },
   data() {
     return {
       treeData: [],
@@ -92,9 +97,40 @@ export default {
 .floor-unit-tree {
   width: 220px;
   min-width: 220px;
+  height: 100%;
 }
 .tree-card {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-
+.tree-card >>> .el-card__body {
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 8px 2px 8px 8px;
+}
+.tree-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.tree-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.tree-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tree-scroll::-webkit-scrollbar-thumb {
+  background: #c8ccd4;
+  border-radius: 3px;
+}
+.tree-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a3a8b3;
+}
 </style>
